@@ -1,9 +1,17 @@
+# tools/finance_tools.py
 from datetime import datetime
-
 from langchain.tools import tool
-
 from database import db_session
 from models import Bill, Budget, Expense
+from context import current_user_id  # ← import the context var
+
+
+def _uid() -> int:
+    """Get the current user's ID from the request context."""
+    uid = current_user_id.get(None)
+    if uid is None:
+        raise RuntimeError("No user_id in context — finance tools require authentication.")
+    return uid
 
 
 @tool
@@ -13,6 +21,7 @@ def add_expense(amount: float, category: str, description: str, date: str = "") 
     expense_date = date if date else datetime.today().strftime("%Y-%m-%d")
     with db_session() as db:
         row = Expense(
+            user_id=_uid(),  # ← scoped to user
             date=expense_date,
             amount=round(amount, 2),
             category=category.lower().strip(),
@@ -25,10 +34,10 @@ def add_expense(amount: float, category: str, description: str, date: str = "") 
 
 @tool
 def get_expenses(month: str = "", category: str = "") -> str:
-    """Fetch expenses filtered by month (YYYY-MM) and/or category.
-    Returns totals grouped by category."""
+    """Fetch expenses filtered by month (YYYY-MM) and/or category."""
+    uid = _uid()
     with db_session() as db:
-        query = db.query(Expense)
+        query = db.query(Expense).filter(Expense.user_id == uid)  # ← scoped
         if month:
             query = query.filter(Expense.date.startswith(month))
         if category:
@@ -46,17 +55,18 @@ def get_expenses(month: str = "", category: str = "") -> str:
 
 @tool
 def check_budget(month: str = "") -> str:
-    """Compare this month's spending against budget limits per category.
-    Shows amount spent, limit, percentage used, and status."""
+    """Compare this month's spending against budget limits per category."""
+    uid = _uid()
     target = month if month else datetime.today().strftime("%Y-%m")
     with db_session() as db:
-        budgets = db.query(Budget).all()
+        budgets = db.query(Budget).filter(Budget.user_id == uid).all()  # ← scoped
         if not budgets:
             return "No budgets set. Use set_budget to define limits."
         lines = []
         for b in budgets:
             spent = sum(
                 e.amount for e in db.query(Expense).filter(
+                    Expense.user_id == uid,        # ← scoped
                     Expense.category == b.category,
                     Expense.date.startswith(target),
                 ).all()
@@ -75,22 +85,27 @@ def check_budget(month: str = "") -> str:
 @tool
 def set_budget(category: str, monthly_limit: float) -> str:
     """Set or update the monthly spending limit for a category."""
+    uid = _uid()
     cat = category.lower().strip()
     with db_session() as db:
-        existing = db.query(Budget).filter(Budget.category == cat).first()
+        existing = db.query(Budget).filter(
+            Budget.user_id == uid,   # ← scoped
+            Budget.category == cat,
+        ).first()
         if existing:
             existing.monthly_limit = monthly_limit
         else:
-            db.add(Budget(category=cat, monthly_limit=monthly_limit))
+            db.add(Budget(user_id=uid, category=cat, monthly_limit=monthly_limit))
         db.commit()
     return f"Budget set: {cat} → ${monthly_limit:.2f}/month"
 
 
 @tool
 def get_upcoming_bills(days_ahead: int = 7) -> str:
-    """List bills due within the next N days based on their monthly due day."""
+    """List bills due within the next N days."""
+    uid = _uid()
     with db_session() as db:
-        bills = db.query(Bill).all()
+        bills = db.query(Bill).filter(Bill.user_id == uid).all()  # ← scoped
     if not bills:
         return "No bills configured."
     today = datetime.today()
@@ -99,7 +114,7 @@ def get_upcoming_bills(days_ahead: int = 7) -> str:
         try:
             due = today.replace(day=b.due_day)
         except ValueError:
-            continue  # skip invalid due_day for this month (e.g. 31 in Feb)
+            continue
         if due < today:
             if today.month == 12:
                 due = due.replace(year=today.year + 1, month=1)
@@ -118,19 +133,23 @@ def get_upcoming_bills(days_ahead: int = 7) -> str:
 @tool
 def add_bill(name: str, due_day: int, amount: float) -> str:
     """Add a recurring monthly bill. due_day is the day of month (1–28)."""
+    uid = _uid()
     with db_session() as db:
-        db.add(Bill(name=name, due_day=due_day, amount=amount, is_recurring=True))
+        db.add(Bill(user_id=uid, name=name, due_day=due_day, amount=amount, is_recurring=True))
         db.commit()
     return f"Bill added: {name} — ${amount:.2f} due on the {due_day} of each month"
 
 
 @tool
 def get_monthly_summary(month: str = "") -> str:
-    """Full financial summary for a month: total spent, category breakdown,
-    budget status, and top 3 largest expenses."""
+    """Full financial summary for a month."""
+    uid = _uid()
     target = month if month else datetime.today().strftime("%Y-%m")
     with db_session() as db:
-        rows = db.query(Expense).filter(Expense.date.startswith(target)).all()
+        rows = db.query(Expense).filter(
+            Expense.user_id == uid,   # ← scoped
+            Expense.date.startswith(target),
+        ).all()
     if not rows:
         return f"No expenses recorded for {target}."
     total = sum(r.amount for r in rows)

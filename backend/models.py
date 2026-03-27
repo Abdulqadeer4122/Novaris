@@ -104,6 +104,7 @@ class Bill(Base):
     name = Column(String, nullable=False)
     due_day = Column(Integer, nullable=False)  # day of month: 1–31
     amount = Column(Float, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     is_recurring = Column(Boolean, default=True)
 
 
