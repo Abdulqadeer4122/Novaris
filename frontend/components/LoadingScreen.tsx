@@ -10,7 +10,7 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#050505",
+        background: "#0A0E27",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -18,16 +18,6 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
         zIndex: 9999,
       }}
     >
-      {/* Ambient radial glow */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "radial-gradient(ellipse 60% 40% at 50% 50%, #c9a84c0e 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
       {/* Spinning ring + logo */}
       <div style={{ position: "relative", width: 96, height: 96 }}>
         {/* Outer spinning arc */}
@@ -46,7 +36,7 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
             cy="48"
             r="44"
             fill="none"
-            stroke="#1f1f1f"
+            stroke="rgba(201,168,76,0.15)"
             strokeWidth="2"
           />
           <circle
@@ -54,17 +44,12 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
             cy="48"
             r="44"
             fill="none"
-            stroke="url(#spinGrad)"
+            stroke="#C9A84C"
+            strokeOpacity="0.3"
             strokeWidth="2"
             strokeLinecap="round"
             strokeDasharray="60 217"
           />
-          <defs>
-            <linearGradient id="spinGrad" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#f0d060" />
-              <stop offset="100%" stopColor="#c9a84c" stopOpacity="0" />
-            </linearGradient>
-          </defs>
         </svg>
 
         {/* Inner pulse ring */}
@@ -73,7 +58,7 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
             position: "absolute",
             inset: 10,
             borderRadius: "50%",
-            border: "1px solid #c9a84c20",
+            border: "1px solid rgba(201,168,76,0.15)",
             animation: "novaris-pulse 2s ease-in-out infinite",
           }}
         />
@@ -88,24 +73,21 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
             justifyContent: "center",
           }}
         >
-          <div style={{ filter: "drop-shadow(0 0 16px #c9a84c50)" }}>
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="14" fill="url(#lCardGrad)" />
-              <path d="M13 9L11 11L11 37L13 39" stroke="url(#lNGrad)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M35 9L37 11L37 37L35 39" stroke="url(#lNGrad)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M14 35L14 13L34 35L34 13" stroke="url(#lNGrad)" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M24 13L22 7Q24 4 26 7Z" fill="url(#lNGrad)" opacity="0.9"/>
-              <defs>
-                <linearGradient id="lCardGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#1a1400"/>
-                  <stop offset="100%" stopColor="#0d0d00"/>
-                </linearGradient>
-                <linearGradient id="lNGrad" x1="11" y1="4" x2="37" y2="44" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#f0d060"/>
-                  <stop offset="100%" stopColor="#c9a84c"/>
-                </linearGradient>
-              </defs>
-            </svg>
+          <div style={{ filter: "drop-shadow(0 0 20px rgba(201,168,76,0.3))" }}>
+            <div
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: "50%",
+                border: "2px solid #C9A84C",
+                background: "rgba(201,168,76,0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span style={{ fontFamily: "Georgia,serif", fontStyle: "italic", color: "#C9A84C", fontSize: 28, lineHeight: 1 }}>N</span>
+            </div>
           </div>
         </div>
       </div>
@@ -114,13 +96,11 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
       <div style={{ marginTop: 28, textAlign: "center" }}>
         <p
           style={{
-            fontSize: "20px",
-            fontWeight: 700,
-            letterSpacing: "0.25em",
-            background: "linear-gradient(135deg, #f0d060 0%, #c9a84c 50%, #e8c060 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
+            fontFamily: "Georgia,serif",
+            fontStyle: "italic",
+            fontSize: 20,
+            color: "#F0F2F8",
+            letterSpacing: "0.2em",
             animation: "novaris-fade 1.5s ease-in-out infinite alternate",
           }}
         >
@@ -128,10 +108,11 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
         </p>
         <p
           style={{
-            fontSize: "12px",
-            color: "#555",
+            fontSize: 12,
+            color: "rgba(240,242,248,0.4)",
             marginTop: 10,
             letterSpacing: "0.05em",
+            fontFamily: "system-ui",
             animation: "novaris-fade 1.5s ease-in-out infinite alternate",
           }}
         >
@@ -148,7 +129,7 @@ export default function LoadingScreen({ message = "Signing in…" }: Props) {
               width: 5,
               height: 5,
               borderRadius: "50%",
-              background: "#c9a84c",
+              background: "#C9A84C",
               animation: `novaris-dot 1.2s ease-in-out ${i * 0.2}s infinite`,
               opacity: 0.3,
             }}

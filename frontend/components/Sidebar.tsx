@@ -55,47 +55,6 @@ function Icon({ name }: { name: string }) {
   );
 }
 
-/** Gold "N" lettermark matching the Novaris logo */
-function NovarisMark({ size = 32 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Hexagonal / diamond frame — two bracket lines */}
-      <path
-        d="M8 6 L6 8 L6 24 L8 26"
-        stroke="url(#gold)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none"
-      />
-      <path
-        d="M24 6 L26 8 L26 24 L24 26"
-        stroke="url(#gold)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none"
-      />
-      {/* N letterform */}
-      <path
-        d="M9 23 L9 9 L23 23 L23 9"
-        stroke="url(#gold)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"
-      />
-      {/* Flame tip above N */}
-      <path
-        d="M16 9 L14.5 4.5 Q16 2 17.5 4.5 Z"
-        fill="url(#gold)"
-        opacity="0.9"
-      />
-      <defs>
-        <linearGradient id="gold" x1="6" y1="2" x2="26" y2="30" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#f0d060"/>
-          <stop offset="40%" stopColor="#c9a84c"/>
-          <stop offset="100%" stopColor="#8a6820"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
-
 export default function Sidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
@@ -104,36 +63,87 @@ export default function Sidebar() {
     ? user.full_name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)
     : user?.email?.[0]?.toUpperCase() ?? "?";
 
-  const navItemClass = (href: string) =>
-    `flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13px] transition-all duration-150 ${
-      pathname === href
-        ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-semibold shadow-sm"
-        : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/60 hover:text-gray-800 dark:hover:text-gray-200"
-    }`;
+  const navItemStyle = (href: string): React.CSSProperties =>
+    pathname === href
+      ? {
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "8px 12px",
+          borderRadius: "0 8px 8px 0",
+          fontSize: 13,
+          transition: "all 0.15s",
+          background: "rgba(201,168,76,0.12)",
+          color: "#C9A84C",
+          borderLeft: "2px solid #C9A84C",
+          fontWeight: 500,
+        }
+      : {
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "8px 12px",
+          borderRadius: "0 8px 8px 0",
+          fontSize: 13,
+          transition: "all 0.15s",
+          color: "rgba(240,242,248,0.55)",
+          borderLeft: "2px solid transparent",
+        };
 
   return (
-    <aside className="w-[232px] min-w-[232px] h-screen flex flex-col bg-white dark:bg-gray-950 border-r border-gray-100 dark:border-gray-800/60">
-
+    <aside
+      style={{
+        width: 232,
+        minWidth: 232,
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        background: "#0A0E27",
+        borderRight: "1px solid rgba(201,168,76,0.15)",
+      }}
+    >
       {/* Brand */}
-      <div className="px-5 pt-6 pb-4">
-        <Link href="/dashboard" className="flex items-center gap-3 group">
-          {/* Logo mark on dark pill */}
-          <div className="w-9 h-9 rounded-xl bg-gray-950 dark:bg-gray-800 flex items-center justify-center shadow-md group-hover:shadow-amber-500/20 transition-shadow">
-            <NovarisMark size={26} />
+      <div style={{ padding: "24px 20px 16px" }}>
+        <Link href="/dashboard" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              border: "1.5px solid #C9A84C",
+              background: "rgba(201,168,76,0.08)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <span style={{ fontFamily: "Georgia,serif", fontStyle: "italic", color: "#C9A84C", fontSize: 16, lineHeight: 1 }}>N</span>
           </div>
-          <div className="flex flex-col">
+          <div style={{ display: "flex", flexDirection: "column" }}>
             <span
-              className="text-[16px] font-bold tracking-wide leading-none"
               style={{
-                background: "linear-gradient(135deg, #c9a84c 0%, #f0d060 50%, #c9a84c 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                fontFamily: "Georgia,serif",
+                fontStyle: "italic",
+                color: "#F0F2F8",
+                letterSpacing: "0.04em",
+                fontSize: 15,
+                fontWeight: 400,
+                lineHeight: 1.2,
               }}
             >
-              NOVARIS
+              Novaris
             </span>
-            <span className="text-[10px] text-gray-400 dark:text-gray-500 tracking-widest uppercase leading-tight mt-0.5">
+            <span
+              style={{
+                color: "rgba(201,168,76,0.5)",
+                fontSize: 9,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                lineHeight: 1.4,
+                marginTop: 2,
+              }}
+            >
               AI Assistant
             </span>
           </div>
@@ -141,29 +151,83 @@ export default function Sidebar() {
       </div>
 
       {/* Divider */}
-      <div className="mx-4 h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-800 to-transparent mb-4" />
+      <div style={{ margin: "0 16px 16px", height: 1, background: "rgba(201,168,76,0.15)" }} />
 
       {/* Nav */}
-      <div className="px-3 flex-1 overflow-y-auto">
-        <p className="text-[10px] font-semibold text-gray-300 dark:text-gray-600 uppercase tracking-widest px-3 mb-2">
+      <div style={{ padding: "0 0", flex: 1, overflowY: "auto" }}>
+        <p
+          style={{
+            color: "rgba(201,168,76,0.5)",
+            fontSize: 9,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            padding: "0 12px",
+            marginBottom: 8,
+          }}
+        >
           Main
         </p>
-        <nav className="flex flex-col gap-0.5 mb-5">
+        <nav style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 20 }}>
           {NAV.map((item) => (
-            <Link key={item.href} href={item.href} className={navItemClass(item.href)}>
-              <Icon name={item.icon} />
+            <Link
+              key={item.href}
+              href={item.href}
+              style={navItemStyle(item.href)}
+              onMouseEnter={(e) => {
+                if (pathname !== item.href) {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#F0F2F8";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (pathname !== item.href) {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,242,248,0.55)";
+                }
+              }}
+            >
+              <span style={{ color: pathname === item.href ? "#C9A84C" : "rgba(240,242,248,0.55)" }}>
+                <Icon name={item.icon} />
+              </span>
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <p className="text-[10px] font-semibold text-gray-300 dark:text-gray-600 uppercase tracking-widest px-3 mb-2">
+        <p
+          style={{
+            color: "rgba(201,168,76,0.5)",
+            fontSize: 9,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            padding: "0 12px",
+            marginBottom: 8,
+          }}
+        >
           Tools
         </p>
-        <nav className="flex flex-col gap-0.5">
+        <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {TOOLS.map((item) => (
-            <Link key={item.href} href={item.href} className={navItemClass(item.href)}>
-              <Icon name={item.icon} />
+            <Link
+              key={item.href}
+              href={item.href}
+              style={navItemStyle(item.href)}
+              onMouseEnter={(e) => {
+                if (pathname !== item.href) {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "#F0F2F8";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (pathname !== item.href) {
+                  (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
+                  (e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,242,248,0.55)";
+                }
+              }}
+            >
+              <span style={{ color: pathname === item.href ? "#C9A84C" : "rgba(240,242,248,0.55)" }}>
+                <Icon name={item.icon} />
+              </span>
               {item.label}
             </Link>
           ))}
@@ -171,35 +235,70 @@ export default function Sidebar() {
       </div>
 
       {/* User footer */}
-      <div className="mx-4 h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-800 to-transparent mb-3" />
-      <div className="px-3 pb-4">
+      <div style={{ margin: "0 16px", height: 1, background: "rgba(201,168,76,0.15)", marginBottom: 12 }} />
+      <div style={{ padding: "0 12px 16px" }}>
         <Link
           href="/profile"
-          className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors group"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "8px 12px",
+            borderRadius: 8,
+            textDecoration: "none",
+            transition: "background 0.15s",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
         >
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 shadow-sm"
             style={{
-              background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
-              color: "#c9a84c",
-              border: "1px solid #c9a84c40",
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              border: "1.5px solid #C9A84C",
+              background: "rgba(201,168,76,0.1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: "Georgia,serif",
+              fontStyle: "italic",
+              color: "#C9A84C",
+              fontSize: 13,
+              flexShrink: 0,
             }}
           >
             {initials}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-semibold text-gray-800 dark:text-gray-200 truncate leading-tight">
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontSize: 12, color: "#F0F2F8", fontFamily: "system-ui", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", lineHeight: 1.3 }}>
               {user?.full_name ?? "User"}
             </p>
-            <p className="text-[11px] text-gray-400 truncate">{user?.email}</p>
+            <p style={{ fontSize: 10, color: "rgba(240,242,248,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.email}</p>
           </div>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-300 dark:text-gray-600 shrink-0">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="rgba(240,242,248,0.3)" strokeWidth="1.5" style={{ flexShrink: 0 }}>
             <path d="M5 3l3 3-3 3"/>
           </svg>
         </Link>
         <button
           onClick={logout}
-          className="w-full mt-1 flex items-center gap-2 px-3 py-1.5 rounded-xl text-[12px] text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+          style={{
+            width: "100%",
+            marginTop: 4,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "6px 12px",
+            borderRadius: 8,
+            fontSize: 12,
+            color: "rgba(201,168,76,0.5)",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            transition: "color 0.15s",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#C9A84C"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "rgba(201,168,76,0.5)"; }}
         >
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M5 2H2a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h3M9 9.5l3-3-3-3M12 6.5H5"/>

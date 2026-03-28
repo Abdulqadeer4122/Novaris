@@ -16,19 +16,6 @@ interface Email {
 
 type Filter = "all" | "unread";
 
-const AVATAR_PALETTES = [
-  { bg: "#1a1040", color: "#a78bfa" },
-  { bg: "#0d1f3c", color: "#60a5fa" },
-  { bg: "#0d2818", color: "#4ade80" },
-  { bg: "#1f1500", color: "#fbbf24" },
-  { bg: "#1f0d1a", color: "#f472b6" },
-  { bg: "#0d1f1f", color: "#22d3ee" },
-];
-
-function avatarPalette(name: string) {
-  return AVATAR_PALETTES[name.charCodeAt(0) % AVATAR_PALETTES.length];
-}
-
 function fmtTime(iso: string) {
   const d = new Date(iso);
   const now = new Date();
@@ -57,30 +44,58 @@ export default function InboxPage() {
   useEffect(() => { load(); }, []);
 
   const filtered = filter === "unread" ? emails.filter((e) => e.is_unread) : emails;
+  const unreadCount = emails.filter((e) => e.is_unread).length;
 
   return (
-    <div className="h-full overflow-y-auto" style={{ background: "#0a0a0a" }}>
+    <div className="h-full overflow-y-auto" style={{ background: "#F0F2F8" }}>
       <div className="min-h-full p-6 lg:p-8 max-w-3xl mx-auto">
 
         {/* ── Header ── */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h1 className="text-[20px] font-semibold" style={{ color: "#e5e5e5" }}>Inbox</h1>
-            <p className="text-[13px] mt-1" style={{ color: "#555" }}>Today&apos;s emails</p>
+            <h1
+              style={{
+                fontFamily: "Georgia,serif",
+                fontStyle: "italic",
+                fontSize: 22,
+                color: "#0A0E27",
+                fontWeight: 400,
+              }}
+            >
+              Inbox
+            </h1>
+            <p
+              className="mt-1 uppercase tracking-widest"
+              style={{ fontSize: 11, color: "#9CA3AF", fontFamily: "system-ui" }}
+            >
+              Today&apos;s emails
+            </p>
+            <div style={{ width: 40, height: 1.5, background: "#C9A84C", marginTop: 6 }} />
           </div>
-          <button
-            onClick={load}
-            className="text-[12px] px-3 py-1.5 rounded-lg transition-colors"
-            style={{
-              background: "#111111",
-              border: "1px solid #1f1f1f",
-              color: "#888",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#1a1a1a")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#111111")}
-          >
-            Refresh
-          </button>
+          <div className="flex items-center gap-3">
+            {unreadCount > 0 && (
+              <span
+                className="px-2 py-0.5 rounded-full text-[11px] font-semibold"
+                style={{ background: "rgba(201,168,76,0.1)", color: "#C9A84C" }}
+              >
+                {unreadCount} unread
+              </span>
+            )}
+            <button
+              onClick={load}
+              className="text-[12px] px-3 py-1.5 rounded-lg transition-colors"
+              style={{
+                background: "#FFFFFF",
+                border: "0.5px solid rgba(10,14,39,0.15)",
+                color: "#6B7280",
+                fontFamily: "system-ui",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#F0F2F8")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#FFFFFF")}
+            >
+              Refresh
+            </button>
+          </div>
         </div>
 
         {/* ── Filter Tabs ── */}
@@ -89,25 +104,23 @@ export default function InboxPage() {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className="text-[12px] px-3 py-1 rounded-full transition-colors"
+              className="text-[12px] px-3 py-1 rounded-lg transition-colors"
               style={
                 filter === f
                   ? {
-                      background: "linear-gradient(135deg, #c9a84c, #f0d060)",
-                      color: "#1a1200",
-                      fontWeight: 600,
+                      background: "#0A0E27",
+                      color: "#C9A84C",
+                      fontWeight: 700,
+                      border: "none",
+                      fontFamily: "system-ui",
                     }
                   : {
-                      background: "transparent",
-                      color: "#666",
+                      background: "#FFFFFF",
+                      color: "#6B7280",
+                      fontFamily: "system-ui",
+                      border: "0.5px solid rgba(10,14,39,0.08)",
                     }
               }
-              onMouseEnter={(e) => {
-                if (filter !== f) e.currentTarget.style.background = "#1a1a1a";
-              }}
-              onMouseLeave={(e) => {
-                if (filter !== f) e.currentTarget.style.background = "transparent";
-              }}
             >
               {f === "all" ? "All" : "Unread"}
             </button>
@@ -116,8 +129,8 @@ export default function InboxPage() {
 
         {/* ── Email List ── */}
         <div
-          className="rounded-2xl overflow-hidden"
-          style={{ background: "#111111", border: "1px solid #1f1f1f" }}
+          className="rounded-xl overflow-hidden"
+          style={{ background: "#FFFFFF", border: "0.5px solid rgba(10,14,39,0.08)", borderRadius: 12 }}
         >
           {loading ? (
             <div className="p-5 space-y-4">
@@ -125,16 +138,16 @@ export default function InboxPage() {
                 <div key={i} className="flex gap-3">
                   <div
                     className="w-8 h-8 rounded-full shrink-0 animate-pulse"
-                    style={{ background: "#1a1a1a" }}
+                    style={{ background: "#F0F2F8" }}
                   />
                   <div className="flex-1 space-y-2">
                     <div
                       className="h-3 rounded animate-pulse"
-                      style={{ background: "#1a1a1a", width: "33%" }}
+                      style={{ background: "#F0F2F8", width: "33%" }}
                     />
                     <div
                       className="h-3 rounded animate-pulse"
-                      style={{ background: "#1a1a1a", width: "60%" }}
+                      style={{ background: "#F0F2F8", width: "60%" }}
                     />
                   </div>
                 </div>
@@ -144,32 +157,31 @@ export default function InboxPage() {
             <div className="flex flex-col items-center justify-center py-16 gap-3">
               <div
                 className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                style={{ background: "#1a1a1a" }}
+                style={{ background: "#F0F2F8" }}
               >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#333" strokeWidth="1.5">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#9CA3AF" strokeWidth="1.5">
                   <rect x="2" y="4" width="16" height="13" rx="2"/>
                   <path d="M2 8l8 5 8-5"/>
                 </svg>
               </div>
-              <p className="text-[13px]" style={{ color: "#444" }}>No emails to show</p>
+              <p className="text-[13px]" style={{ color: "#6B7280" }}>No emails to show</p>
             </div>
           ) : (
             <ul>
               {filtered.map((email, i) => {
                 const displayName = email.sender_name ?? email.sender_email;
                 const initials = displayName.slice(0, 2).toUpperCase();
-                const palette = avatarPalette(displayName);
                 return (
                   <li
                     key={email.id}
                     className="flex items-start gap-3 px-4 py-3 transition-colors cursor-default"
-                    style={i > 0 ? { borderTop: "1px solid #1f1f1f" } : {}}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "#1a1a1a")}
+                    style={i > 0 ? { borderTop: "0.5px solid #F3F4F6" } : {}}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#F8F7F4")}
                     onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-semibold shrink-0"
-                      style={{ background: palette.bg, color: palette.color }}
+                      style={{ background: "rgba(10,14,39,0.07)", color: "#0A0E27" }}
                     >
                       {initials}
                     </div>
@@ -178,33 +190,34 @@ export default function InboxPage() {
                         {email.is_unread && (
                           <span
                             className="w-1.5 h-1.5 rounded-full shrink-0"
-                            style={{ background: "#c9a84c" }}
+                            style={{ background: "#C9A84C" }}
                           />
                         )}
                         <span
-                          className="text-[13px] truncate"
+                          className="text-[12px] truncate"
                           style={{
-                            color: email.is_unread ? "#e5e5e5" : "#666",
+                            color: "#0A0E27",
                             fontWeight: email.is_unread ? 600 : 400,
+                            fontFamily: "system-ui",
                           }}
                         >
                           {displayName}
                         </span>
                         <span
-                          className="text-[11px] ml-auto shrink-0"
-                          style={{ color: "#444" }}
+                          className="text-[10px] ml-auto shrink-0"
+                          style={{ color: "#9CA3AF", fontFamily: "system-ui" }}
                         >
                           {fmtTime(email.received_at)}
                         </span>
                       </div>
                       <p
-                        className="text-[12px] truncate mt-0.5"
-                        style={{ color: email.is_unread ? "#bbb" : "#555" }}
+                        className="text-[11px] truncate mt-0.5"
+                        style={{ color: "#6B7280", fontFamily: "system-ui" }}
                       >
                         {email.subject}
                       </p>
                       {email.snippet && (
-                        <p className="text-[11px] truncate mt-0.5" style={{ color: "#444" }}>
+                        <p className="text-[11px] truncate mt-0.5" style={{ color: "#9CA3AF", fontFamily: "system-ui" }}>
                           {email.snippet}
                         </p>
                       )}

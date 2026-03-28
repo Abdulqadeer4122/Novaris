@@ -85,20 +85,22 @@ export default function ActionCard({ action, onResolve }: Props) {
   return (
     <div className="flex justify-start">
       <div
-        className="w-full max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden shadow-lg"
+        className="w-full max-w-[85%] overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, #1a1400 0%, #221c00 100%)",
-          border: "1px solid #c9a84c50",
+          background: "#FFFFFF",
+          border: "0.5px solid rgba(10,14,39,0.08)",
+          borderLeft: "3px solid #C9A84C",
+          borderRadius: 10,
         }}
       >
         {/* Header */}
         <div
           className="flex items-center gap-2.5 px-4 py-3"
-          style={{ borderBottom: "1px solid #c9a84c25" }}
+          style={{ borderBottom: "0.5px solid rgba(10,14,39,0.08)" }}
         >
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-            style={{ background: "#c9a84c18", color: "#c9a84c" }}
+            style={{ background: "rgba(201,168,76,0.1)", color: "#C9A84C" }}
           >
             {meta.icon}
           </div>
@@ -106,18 +108,18 @@ export default function ActionCard({ action, onResolve }: Props) {
             <div className="flex items-center gap-2">
               <span
                 className="text-[10px] font-bold uppercase tracking-widest"
-                style={{ color: "#c9a84c" }}
+                style={{ color: "#0A0E27", fontFamily: "Georgia,serif" }}
               >
                 Approval Required
               </span>
               <span
                 className="text-[10px] font-medium px-2 py-0.5 rounded-full"
-                style={{ background: "#c9a84c18", color: "#c9a84c" }}
+                style={{ background: "rgba(201,168,76,0.1)", color: "#C9A84C" }}
               >
                 {meta.label}
               </span>
             </div>
-            <p className="text-[13px] text-gray-300 truncate mt-0.5">{describeAction(action)}</p>
+            <p className="text-[13px] truncate mt-0.5" style={{ color: "#6B7280", fontFamily: "system-ui" }}>{describeAction(action)}</p>
           </div>
         </div>
 
@@ -127,9 +129,9 @@ export default function ActionCard({ action, onResolve }: Props) {
             <div
               className="rounded-xl px-3 py-2.5 font-mono text-[11.5px] overflow-auto"
               style={{
-                background: "#0d0d0d",
-                border: "1px solid #2a2a2a",
-                color: "#c9a84c",
+                background: "#F8F7F4",
+                border: "0.5px solid rgba(10,14,39,0.1)",
+                color: "#0A0E27",
                 maxHeight: 160,
               }}
             >
@@ -138,12 +140,13 @@ export default function ActionCard({ action, onResolve }: Props) {
           ) : (
             <div>
               <textarea
-                className="w-full font-mono text-[11.5px] rounded-xl px-3 py-2.5 outline-none resize-none"
+                className="w-full font-mono text-[11.5px] rounded-xl px-3 py-2.5 resize-none"
                 style={{
-                  background: "#0d0d0d",
-                  border: `1px solid ${parseError ? "#ef4444" : "#c9a84c50"}`,
-                  color: "#c9a84c",
-                  caretColor: "#c9a84c",
+                  background: "#F8F7F4",
+                  border: `0.5px solid ${parseError ? "#991B1B" : "rgba(201,168,76,0.3)"}`,
+                  color: "#0A0E27",
+                  caretColor: "#C9A84C",
+                  outline: "none",
                 }}
                 rows={7}
                 value={editedArgs}
@@ -151,7 +154,7 @@ export default function ActionCard({ action, onResolve }: Props) {
                 spellCheck={false}
               />
               {parseError && (
-                <p className="text-[11px] text-red-400 mt-1">Invalid JSON — please fix before saving</p>
+                <p className="text-[11px] mt-1" style={{ color: "#991B1B" }}>Invalid JSON — please fix before saving</p>
               )}
             </div>
           )}
@@ -160,15 +163,16 @@ export default function ActionCard({ action, onResolve }: Props) {
         {/* Actions */}
         <div
           className="flex items-center gap-2 px-4 py-3"
-          style={{ borderTop: "1px solid #c9a84c20" }}
+          style={{ borderTop: "0.5px solid rgba(10,14,39,0.06)" }}
         >
           {/* Approve */}
           <button
             onClick={handleApprove}
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[12px] font-semibold transition-all hover:opacity-90 active:scale-95"
             style={{
-              background: "linear-gradient(135deg, #c9a84c, #f0d060)",
-              color: "#1a1200",
+              background: "#0A0E27",
+              color: "#C9A84C",
+              border: "none",
             }}
           >
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -183,9 +187,9 @@ export default function ActionCard({ action, onResolve }: Props) {
               onClick={() => setEditing(true)}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[12px] font-medium transition-all hover:opacity-80"
               style={{
-                background: "#c9a84c15",
-                border: "1px solid #c9a84c40",
-                color: "#c9a84c",
+                background: "transparent",
+                border: "1px solid #C9A84C",
+                color: "#C9A84C",
               }}
             >
               <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -198,9 +202,9 @@ export default function ActionCard({ action, onResolve }: Props) {
               onClick={handleSaveEdit}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[12px] font-medium transition-all hover:opacity-80"
               style={{
-                background: "#c9a84c15",
-                border: "1px solid #c9a84c40",
-                color: "#c9a84c",
+                background: "transparent",
+                border: "1px solid #C9A84C",
+                color: "#C9A84C",
               }}
             >
               <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -215,9 +219,9 @@ export default function ActionCard({ action, onResolve }: Props) {
             onClick={handleReject}
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[12px] font-medium transition-all hover:opacity-80 ml-auto"
             style={{
-              background: "#ef444415",
-              border: "1px solid #ef444430",
-              color: "#f87171",
+              background: "transparent",
+              border: "1px solid rgba(10,14,39,0.2)",
+              color: "#9CA3AF",
             }}
           >
             <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">

@@ -22,8 +22,8 @@ export default function ChatPage() {
 
   return (
     <AuthGuard>
-    <div className={dark ? "dark" : ""}>
-      <div className="flex h-screen bg-white dark:bg-gray-950 transition-colors">
+    <div>
+      <div className="flex h-screen" style={{ background: "#F0F2F8" }}>
         {/* Session history sidebar */}
         <SessionSidebar
           sessions={sessions}
@@ -35,20 +35,37 @@ export default function ChatPage() {
         {/* Main chat area */}
         <div className="flex flex-col flex-1 min-w-0">
           {/* Header */}
-          <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800 shrink-0">
+          <header
+            className="flex items-center justify-between px-6 py-4 shrink-0"
+            style={{ background: "#FFFFFF", borderBottom: "0.5px solid rgba(10,14,39,0.08)" }}
+          >
             <div>
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h1
+                style={{
+                  fontFamily: "Georgia,serif",
+                  fontStyle: "italic",
+                  fontSize: 16,
+                  color: "#0A0E27",
+                  fontWeight: 400,
+                }}
+              >
                 Personal Assistant
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p style={{ fontSize: 11, color: "#9CA3AF", fontFamily: "system-ui" }}>
                 Gmail · Google Calendar
               </p>
             </div>
             <button
               onClick={() => setDark(!dark)}
-              className="text-sm px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
+              className="text-sm px-3 py-1.5 rounded-lg transition-colors"
+              style={{
+                border: "0.5px solid rgba(10,14,39,0.15)",
+                color: "#6B7280",
+                background: "#FFFFFF",
+                fontFamily: "system-ui",
+              }}
             >
-              {dark ? "☀ Light" : "☾ Dark"}
+              {dark ? "Light" : "Dark"}
             </button>
           </header>
 

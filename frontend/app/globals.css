@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --novaris-navy:        #0A0E27;
+  --novaris-navy-mid:    #141830;
+  --novaris-gold:        #C9A84C;
+  --novaris-gold-soft:   #F5EDD6;
+  --novaris-silver:      #F0F2F8;
+  --novaris-surface:     #F8F7F4;
+  --novaris-white:       #FFFFFF;
+  --novaris-border:      rgba(10,14,39,0.08);
+  --novaris-border-gold: rgba(201,168,76,0.25);
+}
+
+body {
+  background: var(--novaris-silver);
+  color: var(--novaris-navy);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.3);
+  border-color: var(--novaris-gold) !important;
+}
+
+h1,
+h2,
+.font-display {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}

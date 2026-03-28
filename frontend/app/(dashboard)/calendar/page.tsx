@@ -43,24 +43,24 @@ function EventCard({ event }: { event: CalendarEvent }) {
   return (
     <div className="flex items-start gap-3 py-3">
       <div className="w-12 shrink-0 text-right">
-        <p style={{ color: "#bbb", fontSize: "12px", fontWeight: 500 }}>{fmtTime(event.start_time)}</p>
-        <p style={{ color: "#444", fontSize: "10px" }}>{fmtTime(event.end_time)}</p>
+        <p style={{ color: "#0A0E27", fontSize: 12, fontWeight: 500, fontFamily: "system-ui" }}>{fmtTime(event.start_time)}</p>
+        <p style={{ color: "#9CA3AF", fontSize: 10, fontFamily: "system-ui" }}>{fmtTime(event.end_time)}</p>
       </div>
       <div
         className="w-0.5 self-stretch rounded-full shrink-0"
-        style={{ background: "#c9a84c", opacity: 0.4 }}
+        style={{ background: "#C9A84C", opacity: 0.4 }}
       />
       <div className="flex-1 min-w-0">
-        <p style={{ color: "#e5e5e5", fontSize: "13px", fontWeight: 500 }}>{event.title}</p>
+        <p style={{ color: "#0A0E27", fontSize: 13, fontWeight: 500, fontFamily: "system-ui" }}>{event.title}</p>
         {event.location && (
-          <p style={{ color: "#555", fontSize: "11px" }} className="truncate mt-0.5">
+          <p style={{ color: "#9CA3AF", fontSize: 11, fontFamily: "system-ui" }} className="truncate mt-0.5">
             {event.location}
           </p>
         )}
         <div className="flex items-center gap-3 mt-1">
           {event.attendee_count > 0 && (
             <span
-              style={{ background: "#1a1a1a", color: "#555", fontSize: "11px" }}
+              style={{ background: "rgba(10,14,39,0.06)", color: "#6B7280", fontSize: 11, fontFamily: "system-ui" }}
               className="px-2 py-0.5 rounded-full"
             >
               {event.attendee_count} attendee{event.attendee_count !== 1 ? "s" : ""}
@@ -71,7 +71,7 @@ function EventCard({ event }: { event: CalendarEvent }) {
               href={event.meet_link}
               target="_blank"
               rel="noreferrer"
-              style={{ color: "#c9a84c", fontSize: "11px" }}
+              style={{ color: "#C9A84C", fontSize: 11, fontFamily: "system-ui" }}
               className="hover:opacity-70 transition-opacity"
             >
               Join meeting →
@@ -87,7 +87,7 @@ function Skeleton() {
   return (
     <div
       className="rounded-2xl animate-pulse h-20"
-      style={{ background: "#1a1a1a" }}
+      style={{ background: "#F0F2F8" }}
     />
   );
 }
@@ -110,13 +110,29 @@ export default function CalendarPage() {
   const grouped = groupByDate(upcomingEvents);
 
   return (
-    <div className="h-full overflow-y-auto" style={{ background: "#0a0a0a" }}>
+    <div className="h-full overflow-y-auto" style={{ background: "#F0F2F8" }}>
       <div className="min-h-full p-6 lg:p-8 max-w-3xl mx-auto">
 
         {/* ── Header ── */}
         <div className="mb-6">
-          <h1 className="text-[20px] font-semibold" style={{ color: "#e5e5e5" }}>Calendar</h1>
-          <p className="text-[13px] mt-1" style={{ color: "#555" }}>Upcoming 7 days</p>
+          <h1
+            style={{
+              fontFamily: "Georgia,serif",
+              fontStyle: "italic",
+              fontSize: 22,
+              color: "#0A0E27",
+              fontWeight: 400,
+            }}
+          >
+            Calendar
+          </h1>
+          <p
+            className="mt-1 uppercase tracking-widest"
+            style={{ fontSize: 11, color: "#9CA3AF", fontFamily: "system-ui" }}
+          >
+            Upcoming 7 days
+          </p>
+          <div style={{ width: 40, height: 1.5, background: "#C9A84C", marginTop: 6 }} />
         </div>
 
         {loading ? (
@@ -131,27 +147,27 @@ export default function CalendarPage() {
             <div className="mb-5">
               <p
                 className="uppercase tracking-widest mb-3"
-                style={{ fontSize: "10px", color: "#555", fontWeight: 500 }}
+                style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600, fontFamily: "system-ui" }}
               >
                 Today
               </p>
               <div
-                className="rounded-2xl px-4 py-1"
-                style={{ background: "#111111", border: "1px solid #1f1f1f" }}
+                className="rounded-xl px-4 py-1"
+                style={{ background: "#FFFFFF", border: "0.5px solid rgba(10,14,39,0.08)" }}
               >
                 {todayEvents.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-10 gap-2">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1.5">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="1.5">
                       <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v2M16 2v2"/>
                     </svg>
-                    <p style={{ color: "#444", fontSize: "13px" }}>No events today</p>
+                    <p style={{ color: "#6B7280", fontSize: 13, fontFamily: "system-ui" }}>No events today</p>
                   </div>
                 ) : (
                   <div>
                     {todayEvents.map((e, i) => (
                       <div
                         key={e.id}
-                        style={i > 0 ? { borderTop: "1px solid #1f1f1f" } : {}}
+                        style={i > 0 ? { borderTop: "0.5px solid #F3F4F6" } : {}}
                       >
                         <EventCard event={e} />
                       </div>
@@ -166,7 +182,7 @@ export default function CalendarPage() {
               <div>
                 <p
                   className="uppercase tracking-widest mb-3"
-                  style={{ fontSize: "10px", color: "#555", fontWeight: 500 }}
+                  style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600, fontFamily: "system-ui" }}
                 >
                   Upcoming
                 </p>
@@ -174,14 +190,21 @@ export default function CalendarPage() {
                   {grouped.map(([dateKey, dayEvents]) => (
                     <div
                       key={dateKey}
-                      className="rounded-2xl px-4 py-1"
-                      style={{ background: "#111111", border: "1px solid #1f1f1f" }}
+                      className="rounded-xl px-4 py-1"
+                      style={{ background: "#FFFFFF", border: "0.5px solid rgba(10,14,39,0.08)" }}
                     >
                       <div
                         className="pt-3 pb-2"
-                        style={{ borderBottom: "1px solid #1f1f1f" }}
+                        style={{ borderBottom: "0.5px solid rgba(10,14,39,0.06)" }}
                       >
-                        <p style={{ fontSize: "12px", color: "#888", fontWeight: 500 }}>
+                        <p
+                          style={{
+                            fontSize: 12,
+                            color: "#0A0E27",
+                            fontFamily: "Georgia,serif",
+                            fontWeight: 400,
+                          }}
+                        >
                           {fmtDateLabel(dayEvents[0].start_time)}
                         </p>
                       </div>
@@ -189,7 +212,7 @@ export default function CalendarPage() {
                         {dayEvents.map((e, i) => (
                           <div
                             key={e.id}
-                            style={i > 0 ? { borderTop: "1px solid #1f1f1f" } : {}}
+                            style={i > 0 ? { borderTop: "0.5px solid #F3F4F6" } : {}}
                           >
                             <EventCard event={e} />
                           </div>
@@ -206,13 +229,13 @@ export default function CalendarPage() {
               <div className="flex flex-col items-center justify-center py-20 gap-3">
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center"
-                  style={{ background: "#111111", border: "1px solid #1f1f1f" }}
+                  style={{ background: "#FFFFFF", border: "0.5px solid rgba(10,14,39,0.08)" }}
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1.5">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="1.5">
                     <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v2M16 2v2"/>
                   </svg>
                 </div>
-                <p style={{ color: "#444", fontSize: "14px" }}>No events in the next 7 days</p>
+                <p style={{ color: "#6B7280", fontSize: 14, fontFamily: "system-ui" }}>No events in the next 7 days</p>
               </div>
             )}
           </>

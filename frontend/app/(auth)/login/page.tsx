@@ -5,28 +5,6 @@ import { useRouter } from "next/navigation";
 import { saveToken } from "@/lib/auth";
 import LoadingScreen from "@/components/LoadingScreen";
 
-function NovarisMark({ size = 48 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
-      <rect width="48" height="48" rx="14" fill="url(#cardGrad)" />
-      <path d="M13 9L11 11L11 37L13 39" stroke="url(#nGrad)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M35 9L37 11L37 37L35 39" stroke="url(#nGrad)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M14 35L14 13L34 35L34 13" stroke="url(#nGrad)" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M24 13L22 7Q24 4 26 7Z" fill="url(#nGrad)" opacity="0.9"/>
-      <defs>
-        <linearGradient id="cardGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#1a1400"/>
-          <stop offset="100%" stopColor="#0d0d00"/>
-        </linearGradient>
-        <linearGradient id="nGrad" x1="11" y1="4" x2="37" y2="44" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#f0d060"/>
-          <stop offset="100%" stopColor="#c9a84c"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
-
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -54,18 +32,19 @@ export default function LoginPage() {
     router.replace(data.google_connected ? "/dashboard" : "/onboarding");
   }
 
-  const inputStyle = (field: string) => ({
+  const inputStyle = (field: string): React.CSSProperties => ({
     width: "100%",
-    background: "#0d0d0d",
-    border: `1px solid ${focused === field ? "#c9a84c" : "#222"}`,
-    borderRadius: "12px",
-    padding: "12px 16px",
-    fontSize: "14px",
-    color: "#e5e5e5",
+    background: "rgba(255,255,255,0.06)",
+    border: `0.5px solid ${focused === field ? "#C9A84C" : "rgba(240,242,248,0.15)"}`,
+    borderRadius: 8,
+    padding: "10px 14px",
+    fontSize: 14,
+    color: "#F0F2F8",
     outline: "none",
-    caretColor: "#c9a84c",
+    fontFamily: "system-ui",
+    caretColor: "#C9A84C",
     transition: "border-color 0.15s",
-    boxShadow: focused === field ? "0 0 0 3px #c9a84c12" : "none",
+    boxShadow: focused === field ? "0 0 0 2px rgba(201,168,76,0.3)" : "none",
   });
 
   if (loading) return <LoadingScreen message="Signing in…" />;
@@ -73,80 +52,75 @@ export default function LoginPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{ background: "#050505" }}
+      style={{ background: "#0A0E27" }}
     >
-      {/* Background ambient glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse 80% 50% at 50% -10%, #c9a84c0d 0%, transparent 70%)",
-        }}
-      />
-      {/* Subtle grid */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(#c9a84c 1px, transparent 1px), linear-gradient(90deg, #c9a84c 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-
       {/* Card */}
       <div
         className="relative w-full max-w-[400px] mx-4"
         style={{
-          background: "linear-gradient(160deg, #111111 0%, #0d0d0d 100%)",
-          border: "1px solid #222",
-          borderRadius: "24px",
-          padding: "40px 36px",
-          boxShadow: "0 0 80px #c9a84c08, 0 40px 80px rgba(0,0,0,0.6)",
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(201,168,76,0.2)",
+          borderRadius: 14,
+          padding: "36px",
         }}
       >
-        {/* Top gold line */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2"
-          style={{
-            width: "120px",
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, #c9a84c60, transparent)",
-          }}
-        />
-
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="mb-4" style={{ filter: "drop-shadow(0 4px 24px #c9a84c30)" }}>
-            <NovarisMark size={52} />
-          </div>
-          <h1
-            className="text-[26px] font-bold tracking-wider"
+          <div
             style={{
-              background: "linear-gradient(135deg, #f0d060 0%, #c9a84c 50%, #e8c060 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              width: 44,
+              height: 44,
+              borderRadius: "50%",
+              border: "1.5px solid #C9A84C",
+              background: "rgba(201,168,76,0.08)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 12,
             }}
           >
-            NOVARIS
+            <span style={{ fontFamily: "Georgia,serif", fontStyle: "italic", color: "#C9A84C", fontSize: 20, lineHeight: 1 }}>N</span>
+          </div>
+          <h1
+            style={{
+              fontFamily: "Georgia,serif",
+              fontStyle: "italic",
+              fontSize: 22,
+              color: "#F0F2F8",
+              letterSpacing: "0.04em",
+              fontWeight: 400,
+              marginBottom: 4,
+            }}
+          >
+            Novaris
           </h1>
           <p
-            className="text-[10px] tracking-[0.3em] uppercase mt-1"
-            style={{ color: "#4a4a4a" }}
+            style={{
+              fontSize: 10,
+              color: "rgba(201,168,76,0.5)",
+              textTransform: "uppercase",
+              letterSpacing: "0.15em",
+            }}
           >
-            AI Assistant
+            AI ASSISTANT
           </p>
         </div>
 
-        {/* Divider */}
-        <div style={{ height: "1px", background: "#1a1a1a", marginBottom: "28px" }} />
-
-        <p className="text-[13px] mb-6" style={{ color: "#666", textAlign: "center" }}>
-          Sign in to your account
-        </p>
-
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div>
-            <label style={{ fontSize: "11px", color: "#555", letterSpacing: "0.05em", display: "block", marginBottom: "6px" }}>
-              EMAIL
+            <label
+              style={{
+                fontSize: 11,
+                color: "#F0F2F8",
+                letterSpacing: "0.06em",
+                display: "block",
+                marginBottom: 6,
+                fontFamily: "system-ui",
+                fontWeight: 600,
+                textTransform: "uppercase",
+              }}
+            >
+              Email
             </label>
             <input
               type="email"
@@ -161,8 +135,19 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label style={{ fontSize: "11px", color: "#555", letterSpacing: "0.05em", display: "block", marginBottom: "6px" }}>
-              PASSWORD
+            <label
+              style={{
+                fontSize: 11,
+                color: "#F0F2F8",
+                letterSpacing: "0.06em",
+                display: "block",
+                marginBottom: 6,
+                fontFamily: "system-ui",
+                fontWeight: 600,
+                textTransform: "uppercase",
+              }}
+            >
+              Password
             </label>
             <input
               type="password"
@@ -177,18 +162,9 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div
-              style={{
-                background: "#ef444415",
-                border: "1px solid #ef444430",
-                borderRadius: "10px",
-                padding: "10px 14px",
-                fontSize: "13px",
-                color: "#f87171",
-              }}
-            >
+            <p style={{ fontSize: 12, color: "#F87171", fontFamily: "system-ui" }}>
               {error}
-            </div>
+            </p>
           )}
 
           <button
@@ -196,32 +172,34 @@ export default function LoginPage() {
             disabled={loading}
             style={{
               width: "100%",
-              padding: "13px",
-              borderRadius: "12px",
-              background: loading
-                ? "#2a2a2a"
-                : "linear-gradient(135deg, #c9a84c 0%, #f0d060 50%, #c9a84c 100%)",
-              color: loading ? "#555" : "#1a1200",
-              fontSize: "14px",
+              padding: "11px",
+              borderRadius: 8,
+              background: loading ? "rgba(255,255,255,0.1)" : "#C9A84C",
+              color: loading ? "rgba(240,242,248,0.4)" : "#0A0E27",
+              fontSize: 13,
               fontWeight: 700,
-              letterSpacing: "0.03em",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
               border: "none",
               cursor: loading ? "not-allowed" : "pointer",
-              transition: "opacity 0.15s, transform 0.1s",
-              marginTop: "4px",
+              transition: "background 0.15s",
+              fontFamily: "system-ui",
+              marginTop: 4,
             }}
-            onMouseEnter={(e) => { if (!loading) e.currentTarget.style.opacity = "0.9"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+            onMouseEnter={(e) => { if (!loading) (e.currentTarget as HTMLButtonElement).style.background = "#D4B86A"; }}
+            onMouseLeave={(e) => { if (!loading) (e.currentTarget as HTMLButtonElement).style.background = "#C9A84C"; }}
           >
             {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
 
-        <p style={{ marginTop: "24px", fontSize: "13px", color: "#444", textAlign: "center" }}>
+        <p style={{ marginTop: 24, fontSize: 12, color: "rgba(240,242,248,0.4)", textAlign: "center", fontFamily: "system-ui" }}>
           No account?{" "}
           <a
             href="/register"
-            style={{ color: "#c9a84c", textDecoration: "none", fontWeight: 600 }}
+            style={{ color: "#C9A84C", textDecoration: "none", fontWeight: 600 }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.textDecoration = "underline"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.textDecoration = "none"; }}
           >
             Create one
           </a>
